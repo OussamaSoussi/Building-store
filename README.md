@@ -1,3 +1,6 @@
+PS: You wonder why i have 3 commits, well i commited the second step (step 2.0) when i finished it. 
+Then i upgraded my app and modified some files thats the step 2.
+
 STEP1 : 
 - 2 classes created book and main where i dit the total price
 STEP2 :
