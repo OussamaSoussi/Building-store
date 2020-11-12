@@ -27,8 +27,28 @@ CREATE TABLE `book` (
 # Dumping data for table book
 #
 
-INSERT INTO `book` (`Id`,`Title`,`Author`,`Price`,`ReleaseDate`) VALUES (1,'sfsf','qsfq',1325,'1996-05-22');
+INSERT INTO `book` (`Id`,`Title`,`Author`,`Price`,`ReleaseDate`) VALUES (1,'book1','victor',55,'1862-11-11');
 INSERT INTO `book` (`Id`,`Title`,`Author`,`Price`,`ReleaseDate`) VALUES (2,'aaa','bbb',55,'2020-11-11');
+
+#
+# Table structure for table commande
+#
+
+DROP TABLE IF EXISTS `commande`;
+CREATE TABLE `commande` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `idbook` int DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+#
+# Dumping data for table commande
+#
+
 
 #
 # Table structure for table user
@@ -50,7 +70,8 @@ CREATE TABLE `user` (
 #
 
 INSERT INTO `user` (`Id`,`login`,`password`,`first_Name`,`last_name`,`phone`) VALUES (1,'oussama','0000','oussama','soussi',23703187);
-
+ALTER TABLE `commande`
+  ADD FOREIGN KEY (`idbook`) REFERENCES `book` (`Id`);
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

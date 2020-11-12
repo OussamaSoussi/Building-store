@@ -4,7 +4,7 @@
 
 import connection.MyConnection;
 
-import java.sql.Date;
+
 
 		public class Book {
 		private String Title;
@@ -46,7 +46,7 @@ import java.sql.Date;
 		}
 		
 		// Insert Books
-		public void insertBooks (String Title, String Author, double Price, Date releaseDate ) throws ClassNotFoundException, SQLException
+		public void addBook (String Title, String Author, double Price, Date releaseDate ) throws ClassNotFoundException, SQLException
 		  {
 			MyConnection c;
 		    PreparedStatement pstmt;
@@ -93,7 +93,7 @@ import java.sql.Date;
 		 
 		
 		     }
-			// Method Calculate 
+		
 			
 			// Delete Books
 			
@@ -112,12 +112,13 @@ import java.sql.Date;
 			    {e.printStackTrace();}
 			           
 			        }
+			
 			 //Update Books
 			public void updateBook(int id,String title, String author, double price, Date releaseDate2 ) throws ClassNotFoundException, SQLException
 			{   Connection con =null;
 			Class.forName("com.mysql.jdbc.Driver");
 			String url = "jdbc:mysql://localhost:3306/BookStore?serverTimezone=UTC";
-			con = DriverManager.getConnection(url,"root","root");
+			con = DriverManager.getConnection(url,"root","");
 			try {
 			PreparedStatement pstmt = con.prepareStatement("UPDATE book SET author = ?,title = ?,price = ?,releasedate = ? WHERE id = ?");
 
