@@ -1,98 +1,140 @@
-package modeles;
-
-import java.util.*;
-
-public class Book {
-	private int bookId;
-	private String title;
-	private String author;
-	private double price;
-	private Date releaseDate;
+	package modeles;
 	
-//	private static Vector<Book> books = new Vector<Book>();
+	import java.sql.*;
+
+import connection.MyConnection;
+
+import java.sql.Date;
+
+		public class Book {
+		private String Title;
+		private String Author;
+		private double Price;
+		private Date ReleaseDate;
+		Connection c =null;
+		Statement stmt =null;
+		public Book(String title, String author, double price, Date releaseDate) {
+			super();
+			Title = title;
+			Author = author;
+			Price = price;
+			ReleaseDate = releaseDate;
+		}
+		public String getTitle() {
+			return Title;
+		}
+		public void setTitle(String title) {
+			Title = title;
+		}
+		public String getAuthor() {
+			return Author;
+		}
+		public void setAuthor(String author) {
+			Author = author;
+		}
+		public double getPrice() {
+			return Price;
+		}
+		public void setPrice(double price) {
+			Price = price;
+		}
+		public Date getRealeaseDate() {
+			return ReleaseDate;
+		}
+		public void setRealeaseDate(Date realeaseDate) {
+			ReleaseDate = realeaseDate;
+		}
+		
+		// Insert Books
+		public void insertBooks (String Title, String Author, double Price, Date releaseDate ) throws ClassNotFoundException, SQLException
+		  {
+			MyConnection c;
+		    PreparedStatement pstmt;
+		    c = new MyConnection();
+			    if (c==null)
+		            System.out.println("server connection error!");
+		            else System.out.println("Connected !");
+			    pstmt =  c.Myconnect().prepareStatement("INSERT INTO `book`(Id,Title,Author,Price,ReleaseDate) VALUES (? , ?, ?, ?, ?)");
+			    pstmt.setNString(1, null );
+			    pstmt.setString(2, Title );
+			    pstmt.setString(3, Author );
+			    pstmt.setDouble(4,Price);
+			    pstmt.setDate(5, releaseDate);
+			    System.out.println("Added with Success");
+			    pstmt.executeUpdate();
+		  }
+		
+		  // Display Books
 	
-	public Book(int bookId, String title, String author, double price, Date releaseDate ) {
-		this.bookId = bookId;
-		this.title = title;
-		this.author = author;
-		this.price = price;
-		this.releaseDate = releaseDate;
-	}
+			public void displayBook() throws ClassNotFoundException, SQLException 
+		    {   MyConnection c;
+		    PreparedStatement pstmt;
+		    c = new MyConnection();
+			    if (c==null)
+		            System.out.println("server connection error!");
+		            else System.out.println("Connected !");
+			    
+		    try {
+		    	pstmt =  c.Myconnect().prepareStatement("SELECT * FROM Book "); 
+		    ResultSet rs = pstmt.executeQuery();
+		    int i=0;
+		    while (rs.next()) {
+		        i++;
+		        System.out.println("Book n° "+i);
+		        System.out.println("id : " + rs.getString("id"));
+		        System.out.println("title : " + rs.getString("title"));
+		        System.out.println("author : " + rs.getString("author"));
+		        System.out.println("telephone : " + rs.getString("price"));
+		        System.out.println("date: " + rs.getString("releaseDate"));
+		    }}
+		    catch(SQLException e)
+		    {e.printStackTrace();}
+		
+		 
+		
+		     }
+			// Method Calculate 
+			
+			// Delete Books
+			
+			public void deleteBook(long id) throws ClassNotFoundException, SQLException
+			    {    MyConnection c;
+			    PreparedStatement pstmt;
+			    c = new MyConnection();
+			    try {
+			   pstmt =  c.Myconnect().prepareStatement("DELETE FROM book WHERE id =?");
+			  
+			    pstmt.setLong(1,id);
+			    pstmt.executeUpdate();
+			    System.out.println("Deleted !");
+			    }
+			    catch(SQLException e)
+			    {e.printStackTrace();}
+			           
+			        }
+			 //Update Books
+			public void updateBook(int id,String title, String author, double price, Date releaseDate2 ) throws ClassNotFoundException, SQLException
+			{   Connection con =null;
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/BookStore?serverTimezone=UTC";
+			con = DriverManager.getConnection(url,"root","root");
+			try {
+			PreparedStatement pstmt = con.prepareStatement("UPDATE book SET author = ?,title = ?,price = ?,releasedate = ? WHERE id = ?");
 
-	public int getBookId() {
-		return bookId;
-	}
+			 
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
-	}
+			pstmt.setString(1, author );
+			pstmt.setString(2, title );
+			pstmt.setDouble(3,price);
+			pstmt.setDate(4, releaseDate2 );
+			pstmt.setInt(5, id );
 
-	public String getTitle() {
-		return title;
-	}
+			 
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public Date getReleaseDate() {
-		return releaseDate;
-	}
-
-	public void setReleaseDate(Date releaseDate) {
-		this.releaseDate = releaseDate;
-	}
-
-	
-	@Override
-	public String toString() {
-		return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + ", price=" + price
-				+ ", releaseDate=" + releaseDate + "]";
-	}
-
-
-	public void addBook(Book[] produits,Book p,int nbProduit )
-	{
-	if (nbProduit<produits.length)
-	{produits[nbProduit]=p;
-	nbProduit+=1;
-	}
-	else
-	System.out.println("le tableau est plein");
-	}
-	
-	public void deleteBook(Book[] produits,int x)
-	{
-	produits[x]=null;
-	}
-	
-	public void displayBook (Book[] produits,int nbProduit )
-	{
-		for (int i=0;i< nbProduit;i++)
-		{
-			System.out.println("L'article n"+i+" son Nom est"+produits[i].title+" son Prix est"+produits[i].price);
-        }
-	}
-	
-	public double displayCalculTotal(double Quantity,Book p) {
-		double s ;
-		s=Quantity*p.getPrice();
-		return s;
-	}
-}
+			           pstmt.executeUpdate();
+			           System.out.println("updated succefully");}
+			catch(SQLException e)
+			{e.printStackTrace();}
+			       
+			    }
+			}
